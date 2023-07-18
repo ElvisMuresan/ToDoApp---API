@@ -10,8 +10,11 @@ const app = express();
 app.use(morgan("tiny"));
 app.use(express.static(path.join(__dirname, "/public/")));
 
+app.set("views", "./src/views");
+app.set("view engine", "ejs");
+
 app.get("/", (req, res) => {
-  res.send("Hello world");
+  res.render("index", { title: " my ToDoApp" });
 });
 
 app.listen(PORT, () => {

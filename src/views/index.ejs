@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task List 2023</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="main.css" />
+  </head>
+
+  <body>
+    <header class="card">
+      <h1>TODO: <span id="date"></span></h1>
+    </header>
+
+    <main>
+      <form id="new-task-form" class="card add">
+        <div class="txt-container">
+          <input
+            type="text"
+            id="inputId"
+            placeholder="What do you want to do in this month?"
+          />
+        </div>
+        <button type="submit" id="addToDo" class="cb-container">
+          Add task
+        </button>
+      </form>
+
+      <div id="listaParinteId" class="toDoList"></div>
+
+      <div class="card stat">
+        <ul class="stats">
+          <li>
+            <span>Remaining:</span>
+            <span id="remaining-tasks">0</span>
+          </li>
+          <li>
+            <span>Completed:</span>
+            <span id="completed-tasks">0</span>
+          </li>
+          <li>
+            <span>Total:</span>
+            <span id="total-tasks">0</span>
+          </li>
+        </ul>
+        <button type="submit" id="clearToDo" class="cb-container">
+          Clear all
+        </button>
+      </div>
+    </main>
+
+    <div id="confirmationDialog" class="confirmationDialog">
+      <div class="PopUp">
+        <section>
+          <header class="PopUp-header">
+            <span onclick="Cancel()">&times;</span>
+            <h2 id="confirmDeleteHeader"></h2>
+            <p id="confirmDeleteMessage"></p>
+          </header>
+
+          <footer class="PopUp-footer">
+            <button class="PopUp-cancel" onclick="Cancel()">Cancel</button>
+            <button id="PopUp-confirm" class="PopUp-confirm">Confirm</button>
+          </footer>
+        </section>
+      </div>
+    </div>
+
+    <div id="confirmationDialogAll" class="confirmationDialogAll">
+      <div class="PopUpAll">
+        <section>
+          <header class="PopUp-headerAll">
+            <span onclick="Cancel()">&times;</span>
+            <h2 id="confirmDeleteHeaderAll"></h2>
+            <p id="confirmDeleteMessageAll"></p>
+          </header>
+
+          <footer class="PopUp-footerAll">
+            <button class="PopUp-cancel" onclick="Cancel()">Cancel</button>
+            <button id="PopUp-deleteAll" class="PopUp-deleteAll">
+              Delete all
+            </button>
+          </footer>
+        </section>
+      </div>
+    </div>
+
+    <div id="notification" class="notificationBox" />
+
+    <script src="main.js"></script>
+  </body>
+</html>
