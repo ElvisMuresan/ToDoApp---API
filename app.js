@@ -16,6 +16,9 @@ app.set("view engine", "ejs");
 app.get("/", (req, res) => {
   res.render("index", { title: " my ToDoApp" });
 });
+app.get("/hello", (req, res) => {
+  res.send("Hello World");
+});
 
 app.listen(PORT, () => {
   debug(`listening to port ${chalk.green(PORT)}`);
