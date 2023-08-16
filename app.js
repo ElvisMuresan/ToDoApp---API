@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const chalk = require("chalk");
 const debug = require("debug")("app");
 const morgan = require("morgan");
@@ -11,6 +12,9 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+
+app.use(express.json());
+app.use(cors());
 
 mongoose
   .connect(process.env.MONGODB_URL)
