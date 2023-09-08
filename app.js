@@ -28,10 +28,6 @@ app.use(morgan("tiny"));
 app.set("views", "./src/views");
 app.set("view engine", "ejs");
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-
 app.listen(PORT, () => {
   debug(`listening to port ${chalk.green(PORT)}`);
 });
