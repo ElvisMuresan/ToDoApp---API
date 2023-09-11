@@ -23,8 +23,20 @@ module.exports.updateToDo = async (req, res) => {
 };
 
 module.exports.deleteToDo = async (req, res) => {
-  const { _id } = req.body;
+  const { _id } = req.params;
   ToDoModel.findByIdAndDelete(_id)
     .then(() => res.send("Deleted Susscesfully..."))
     .catch((err) => debug(err));
+};
+
+module.exports.deleteAllToDos = async (req, res) => {
+  try {
+    await ToDoModel.deleteMany({}); // Șterge toate înregistrările din colecția ToDo
+    res
+      .status(204)
+      .json({ message: "Toate ToDo-urile au fost șterse cu succes." });
+  } catch (error) {
+    console.error("Eroare la ștergerea ToDo-urilor", error);
+    res.status(500).json({ error: "Eroare la ștergerea ToDo-urilor" });
+  }
 };
