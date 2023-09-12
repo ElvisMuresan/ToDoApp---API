@@ -32,7 +32,7 @@ module.exports.deleteToDo = async (req, res) => {
 
 module.exports.deleteAllToDos = async (req, res) => {
   try {
-    await ToDoModel.deleteMany({}); // Șterge toate înregistrările din colecția ToDo
+    await ToDoModel.deleteMany({});
     res
       .status(204)
       .json({ message: "Toate ToDo-urile au fost șterse cu succes." });
