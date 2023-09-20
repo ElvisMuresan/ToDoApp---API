@@ -17,8 +17,16 @@ module.exports.saveToDo = async (req, res) => {
 
 module.exports.updateToDo = async (req, res) => {
   const { _id } = req.params;
-  const { title, description, checked } = req.body;
-  ToDoModel.findByIdAndUpdate(_id, { title, description, checked })
+  const { title, description } = req.body;
+  ToDoModel.findByIdAndUpdate(_id, { title, description })
+    .then(() => res.send("Updated Susscesfully..."))
+    .catch((err) => debug(err));
+};
+
+module.exports.checkToDo = async (req, res) => {
+  const { _id } = req.params;
+  const { checked } = req.body;
+  ToDoModel.findByIdAndUpdate(_id, { checked })
     .then(() => res.send("Updated Susscesfully..."))
     .catch((err) => debug(err));
 };
