@@ -7,8 +7,8 @@ module.exports.getToDo = async (req, res) => {
 };
 
 module.exports.saveToDo = async (req, res) => {
-  const { title, description, checked } = req.body;
-  ToDoModel.create({ title, description, checked }).then((data) => {
+  const { title, description, checked, position } = req.body;
+  ToDoModel.create({ title, description, checked, position }).then((data) => {
     debug(`Added Successfully...`);
     debug(data);
     res.send(data);
@@ -17,8 +17,8 @@ module.exports.saveToDo = async (req, res) => {
 
 module.exports.updateToDo = async (req, res) => {
   const { _id } = req.params;
-  const { title, description } = req.body;
-  ToDoModel.findByIdAndUpdate(_id, { title, description })
+  const { title, description, position } = req.body;
+  ToDoModel.findByIdAndUpdate(_id, { title, description, position })
     .then(() => res.send("Updated Susscesfully..."))
     .catch((err) => debug(err));
 };
