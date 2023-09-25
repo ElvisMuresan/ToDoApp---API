@@ -13,6 +13,10 @@ const todoSchema = new mongoose.Schema({
     type: Boolean,
     require: true,
   },
+  position: {
+    type: Number,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("ToDo", todoSchema);

@@ -31,6 +31,25 @@ module.exports.checkToDo = async (req, res) => {
     .catch((err) => debug(err));
 };
 
+module.exports.moveUpToDo = async (req, res) => {
+  const { _id } = req.params;
+  const currentToDo = await ToDoModel.findById(_id);
+  const aboveToDo = await ToDoModel.findOne({ _id: { $lt: _id } }).sort({
+    _id: -1,
+  });
+
+  if (aboveToDo) {
+    const tempPosition = currentToDo.position;
+    currentToDo.position = aboveToDo.position;
+    aboveToDo.position = tempPosition;
+
+    await currentToDo.save();
+    await aboveToDo.save();
+  }
+
+  res.send("Moved Up Successfully...");
+};
+
 module.exports.deleteToDo = async (req, res) => {
   const { _id } = req.params;
   ToDoModel.findByIdAndDelete(_id)
