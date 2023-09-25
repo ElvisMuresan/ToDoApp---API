@@ -15,7 +15,7 @@ const todoSchema = new mongoose.Schema({
   },
   position: {
     type: Number,
-    required: true,
+    required: false,
   },
 });
 
