@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const todoSchema = new mongoose.Schema({
+  position: {
+    type: Number,
+    required: false,
+  },
   title: {
     type: String,
     require: true,
@@ -12,10 +16,6 @@ const todoSchema = new mongoose.Schema({
   checked: {
     type: Boolean,
     require: true,
-  },
-  position: {
-    type: Number,
-    required: false,
   },
 });
 
