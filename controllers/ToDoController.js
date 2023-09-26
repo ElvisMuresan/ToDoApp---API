@@ -34,10 +34,9 @@ module.exports.checkToDo = async (req, res) => {
 module.exports.moveUpToDo = async (req, res) => {
   const { _id } = req.params;
   const currentToDo = await ToDoModel.findById(_id);
-  const aboveToDo = await ToDoModel.findOne({ _id: { $lt: _id } }).sort({
-    _id: -1,
-  });
-
+  const aboveToDo = await ToDoModel.findOne({
+    position: { $lt: currentToDo.position },
+  }).sort({ position: -1 });
   if (aboveToDo) {
     const tempPosition = currentToDo.position;
     currentToDo.position = aboveToDo.position;
@@ -46,7 +45,7 @@ module.exports.moveUpToDo = async (req, res) => {
     await currentToDo.save();
     await aboveToDo.save();
   }
-
+  await ToDoModel.updateMany({}, { $inc: { position: 1 } });
   res.send("Moved Up Successfully...");
 };
 
