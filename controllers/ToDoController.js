@@ -56,9 +56,29 @@ module.exports.moveUpToDo = async (req, res) => {
 
 module.exports.deleteToDo = async (req, res) => {
   const { _id } = req.params;
-  ToDoModel.findByIdAndDelete(_id)
-    .then(() => res.send("Deleted Susscesfully..."))
-    .catch((err) => debug(err));
+
+  try {
+    const deletedToDo = await ToDoModel.findByIdAndDelete(_id);
+    if (!deletedToDo) {
+      return res.status(404).json({ error: "ToDo nu a fost găsit." });
+    }
+
+    // Găsiți toate ToDos-urile cu o poziție mai mare decât ToDo-ul șters
+    const todosToUpdate = await ToDoModel.find({
+      position: { $gt: deletedToDo.position },
+    });
+
+    // Actualizați poziția pentru fiecare ToDo în lista de mai sus
+    for (const todo of todosToUpdate) {
+      todo.position -= 1;
+      await todo.save();
+    }
+
+    res.send("ToDo șters cu succes și pozițiile actualizate.");
+  } catch (error) {
+    console.error("Eroare la ștergerea ToDo-ului", error);
+    res.status(500).json({ error: "Eroare la ștergerea ToDo-ului" });
+  }
 };
 
 module.exports.deleteAllToDos = async (req, res) => {
