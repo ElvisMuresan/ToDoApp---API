@@ -54,6 +54,29 @@ module.exports.moveUpToDo = async (req, res) => {
   res.send("Moved Up Successfully...");
 };
 
+module.exports.moveDownToDo = async (req, res) => {
+  const { _id } = req.params;
+  const currentToDo = await ToDoModel.findById(_id);
+  const belowToDo = await ToDoModel.findOne({
+    position: currentToDo.position + 1,
+  });
+
+  if (belowToDo) {
+    const tempTitle = currentToDo.title;
+    const tempDescription = currentToDo.description;
+
+    currentToDo.title = belowToDo.title;
+    currentToDo.description = belowToDo.description;
+
+    belowToDo.title = tempTitle;
+    belowToDo.description = tempDescription;
+
+    await currentToDo.save();
+    await belowToDo.save();
+  }
+  res.send("Moved Down Successfully...");
+};
+
 module.exports.deleteToDo = async (req, res) => {
   const { _id } = req.params;
 
@@ -63,12 +86,10 @@ module.exports.deleteToDo = async (req, res) => {
       return res.status(404).json({ error: "ToDo nu a fost găsit." });
     }
 
-    // Găsiți toate ToDos-urile cu o poziție mai mare decât ToDo-ul șters
     const todosToUpdate = await ToDoModel.find({
       position: { $gt: deletedToDo.position },
     });
 
-    // Actualizați poziția pentru fiecare ToDo în lista de mai sus
     for (const todo of todosToUpdate) {
       todo.position -= 1;
       await todo.save();
