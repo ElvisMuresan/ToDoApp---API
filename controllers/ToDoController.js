@@ -35,13 +35,18 @@ module.exports.moveUpToDo = async (req, res) => {
   const { _id } = req.params;
   const currentToDo = await ToDoModel.findById(_id);
   const aboveToDo = await ToDoModel.findOne({
-    position: { $lt: currentToDo.position },
-  }).sort({ position: -1 });
+    position: currentToDo.position - 1,
+  });
 
   if (aboveToDo) {
-    const tempPosition = currentToDo.position;
-    currentToDo.position = aboveToDo.position;
-    aboveToDo.position = tempPosition;
+    const tempTitle = currentToDo.title;
+    const tempDescription = currentToDo.description;
+
+    currentToDo.title = aboveToDo.title;
+    currentToDo.description = aboveToDo.description;
+
+    aboveToDo.title = tempTitle;
+    aboveToDo.description = tempDescription;
 
     await currentToDo.save();
     await aboveToDo.save();
