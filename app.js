@@ -5,6 +5,8 @@ const chalk = require("chalk");
 const debug = require("debug")("app");
 const morgan = require("morgan");
 const path = require("path");
+const bodyParser = require("body-parser");
+const passport = require("passport");
 
 const routes = require("./routes/ToDoRoute");
 
@@ -15,6 +17,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(passport.initialize());
 
 mongoose
   .connect(process.env.MONGODB_URL)
