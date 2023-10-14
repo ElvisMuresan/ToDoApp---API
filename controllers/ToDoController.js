@@ -2,6 +2,8 @@ const passport = require("passport");
 const ToDoModel = require("./models/ToDoModel");
 const UserModel = require("./models/UserModel");
 const debug = require("debug")("app");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 module.exports.getToDo = async (req, res) => {
   const toDo = await ToDoModel.find();
@@ -32,6 +34,28 @@ module.exports.loginAuth = async (req, res) => {
     debug(data);
     res.send(data);
   });
+};
+
+module.exports.signUp = async (req, res) => {
+  const { email, password } = req.body;
+  const existingUser = await UserModel.findOne({ email });
+  if (existingUser) {
+    return res.status(400).json({ error: "User already exists" });
+  }
+
+  // Hash parola înainte de a o stoca
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Creează un nou utilizator în baza de date
+  const newUser = new UserModel({ email, password: hashedPassword });
+  await newUser.save();
+
+  // Generează un token JWT pentru autentificare
+  const token = jwt.sign({ userId: newUser._id }, "your-secret-key", {
+    expiresIn: "1h",
+  });
+
+  res.json({ token });
 };
 
 module.exports.updateToDo = async (req, res) => {

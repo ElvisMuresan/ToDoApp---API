@@ -8,6 +8,7 @@ const {
   moveDownToDo,
   deleteToDo,
   loginAuth,
+  signUp,
   deleteAllToDos,
 } = require("../controllers/ToDoController");
 
@@ -21,5 +22,6 @@ router.post("/moveUp/:_id", moveUpToDo);
 router.post("/moveDown/:_id", moveDownToDo);
 router.post("/delete/:_id", deleteToDo);
 router.post("/login", loginAuth);
+router.post("/signUp", signUp);
 router.delete("/delete", deleteAllToDos);
 module.exports = router;
