@@ -1,4 +1,6 @@
+const passport = require("passport");
 const ToDoModel = require("./models/ToDoModel");
+const UserModel = require("./models/UserModel");
 const debug = require("debug")("app");
 
 module.exports.getToDo = async (req, res) => {
@@ -10,6 +12,23 @@ module.exports.saveToDo = async (req, res) => {
   const { position, title, description, checked } = req.body;
   ToDoModel.create({ position, title, description, checked }).then((data) => {
     debug(`Added Successfully...`);
+    debug(data);
+    res.send(data);
+  });
+};
+
+module.exports.loginAuth = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await UserModel.findOne({ email });
+
+  if (!user || !user.comparePassword(password)) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  const token = generateToken(user);
+  res.json({ token });
+  UserModel.create({ email, password }).then((data) => {
+    debug(`Login Successfully...`);
     debug(data);
     res.send(data);
   });
