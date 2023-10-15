@@ -11,6 +11,9 @@ const routes = require("./routes/ToDoRoute");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const UserModel = require("./controllers/models/UserModel");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+
+debug.enabled = true;
 
 require("dotenv").config();
 
@@ -21,6 +24,42 @@ app.use(express.json());
 app.use(cors());
 app.use(
   session({ secret: "your-secret-key", resave: true, saveUninitialized: true })
+);
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID:
+        "755798293757-6rpa8382regso8ocfdgiv7h4g0n1kju5.apps.googleusercontent.com",
+      clientSecret: "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",
+      // callbackURL: "https://elvistodoapp.netlify.app/auth/google",
+      callbackURL: "http://127.0.0.1:5501/auth/google",
+    },
+    (accessToken, refreshToken, email, done) => {
+      const verifyCallback = async () => {
+        const existingUser = await UserModel.findOne({ email });
+
+        if (existingUser) {
+          // Utilizatorul există, întoarceți-l
+          return done(null, existingUser);
+        } else {
+          // Utilizatorul nu există, creați unul nou
+          const newUser = new UserModel({
+            email,
+          });
+
+          // Salvați noul utilizator în baza de date
+          await newUser.save();
+
+          // Returnați noul utilizator
+          return done(null, newUser);
+        }
+      };
+      verifyCallback().catch((error) => {
+        return done(error);
+      });
+    }
+  )
 );
 
 passport.use(

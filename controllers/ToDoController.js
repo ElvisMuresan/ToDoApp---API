@@ -19,6 +19,12 @@ module.exports.saveToDo = async (req, res) => {
   });
 };
 
+function generateToken(user) {
+  return jwt.sign({ userId: user._id }, "your-secret-key", {
+    expiresIn: "1h",
+  });
+}
+
 module.exports.loginAuth = async (req, res) => {
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email });
