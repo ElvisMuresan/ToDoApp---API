@@ -40,17 +40,12 @@ module.exports.loginAuth = async (req, res) => {
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email });
 
-  if (!user || !user.comparePassword(password)) {
+  if (!user || !(await user.comparePassword(password))) {
     return res.status(401).json({ error: "Invalid credentials" });
   }
 
   const token = generateToken(user);
   res.json({ token });
-  UserModel.create({ email, password }).then((data) => {
-    debug(`Login Successfully...`);
-    debug(data);
-    res.send(data);
-  });
 };
 
 module.exports.signUpAuth = async (req, res) => {
@@ -68,10 +63,7 @@ module.exports.signUpAuth = async (req, res) => {
   await newUser.save();
 
   // Generează un token JWT pentru autentificare
-  const token = jwt.sign({ userId: newUser._id }, "your-secret-key", {
-    expiresIn: "1h",
-  });
-
+  const token = generateToken(newUser);
   res.json({ token });
 };
 
