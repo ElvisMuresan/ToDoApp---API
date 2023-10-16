@@ -10,6 +10,17 @@ module.exports.getToDo = async (req, res) => {
   res.send(toDo);
 };
 
+module.exports.logout = async (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.error("Eroare la deconectare:", err);
+      return res.status(500).json({ error: "Eroare la deconectare" });
+    }
+    res.redirect("/");
+    debug("utilizator deconectat cu succes");
+  });
+};
+
 module.exports.saveToDo = async (req, res) => {
   const { position, title, description, checked } = req.body;
   ToDoModel.create({ position, title, description, checked }).then((data) => {
