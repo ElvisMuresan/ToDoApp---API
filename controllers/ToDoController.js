@@ -51,18 +51,14 @@ module.exports.loginAuth = async (req, res) => {
 module.exports.signUpAuth = async (req, res) => {
   const { email, password } = req.body;
   const existingUser = await UserModel.findOne({ email });
+
   if (existingUser) {
     return res.status(400).json({ error: "User already exists" });
   }
 
-  // Hash parola înainte de a o stoca
   const hashedPassword = await bcrypt.hash(password, 10);
-
-  // Creează un nou utilizator în baza de date
   const newUser = new UserModel({ email, password: hashedPassword });
   await newUser.save();
-
-  // Generează un token JWT pentru autentificare
   const token = generateToken(newUser);
   res.json({ token });
 };

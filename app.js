@@ -40,18 +40,14 @@ passport.use(
         const existingUser = await UserModel.findOne({ email });
 
         if (existingUser) {
-          // Utilizatorul există, întoarceți-l
           return done(null, existingUser);
         } else {
-          // Utilizatorul nu există, creați unul nou
           const newUser = new UserModel({
             email,
           });
 
-          // Salvați noul utilizator în baza de date
           await newUser.save();
 
-          // Returnați noul utilizator
           return done(null, newUser);
         }
       };
