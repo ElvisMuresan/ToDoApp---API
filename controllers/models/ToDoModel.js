@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const todoSchema = new mongoose.Schema({
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   position: {
     type: Number,
     required: false,
