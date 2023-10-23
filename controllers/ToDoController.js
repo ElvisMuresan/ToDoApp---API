@@ -6,8 +6,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 module.exports.getToDo = async (req, res) => {
-  const owner = req.user._id;
-  const toDo = await ToDoModel.find({ owner });
+  // const owner = req.user._id;
+  const toDo = await ToDoModel.find();
   res.send(toDo);
 };
 
@@ -24,14 +24,12 @@ module.exports.logout = async (req, res) => {
 
 module.exports.saveToDo = async (req, res) => {
   const { position, title, description, checked } = req.body;
-  const owner = req.user._id;
-  ToDoModel.create({ owner, position, title, description, checked }).then(
-    (data) => {
-      debug(`Added Successfully...`);
-      debug(data);
-      res.send(data);
-    }
-  );
+  // const owner = req.user._id;
+  ToDoModel.create({ position, title, description, checked }).then((data) => {
+    debug(`Added Successfully...`);
+    debug(data);
+    res.send(data);
+  });
 };
 
 function generateToken(user) {
@@ -49,6 +47,7 @@ module.exports.loginAuth = async (req, res) => {
   }
 
   const token = generateToken(user);
+  console.log("token:", token);
   res.json({ token });
 };
 
