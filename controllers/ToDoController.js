@@ -52,15 +52,24 @@ module.exports.loginAuth = async (req, res) => {
 };
 
 module.exports.signUpAuth = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, confirmPassword } = req.body;
   const existingUser = await UserModel.findOne({ email });
 
   if (existingUser) {
     return res.status(400).json({ error: "User already exists" });
   }
+  if (password !== confirmPassword) {
+    return res
+      .status(400)
+      .json({ error: "Password and confirmation password do not match" });
+  }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = new UserModel({ email, password: hashedPassword });
+
+  const newUser = new UserModel({
+    email,
+    password: hashedPassword,
+  });
   await newUser.save();
   const token = generateToken(newUser);
   res.json({ token });
