@@ -10,7 +10,7 @@ const {
   moveUpToDo,
   moveDownToDo,
   deleteToDo,
-  loginAuth,
+  // loginAuth,
   signUpAuth,
   deleteAllToDos,
 } = require("../controllers/ToDoController");
@@ -25,7 +25,7 @@ router.post("/check/:_id", checkToDo);
 router.post("/moveUp/:_id", moveUpToDo);
 router.post("/moveDown/:_id", moveDownToDo);
 router.post("/delete/:_id", deleteToDo);
-router.post("/logIn", loginAuth);
+router.post("/logIn", passport.authenticate("local"));
 router.post("/signUp", signUpAuth);
 router.delete("/delete", deleteAllToDos);
 
@@ -36,6 +36,7 @@ router.get(
     scope: ["https://www.googleapis.com/auth/plus.login"],
   })
 );
+
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {

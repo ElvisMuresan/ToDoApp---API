@@ -63,16 +63,11 @@ passport.use(
     {
       usernameField: "email",
       passwordField: "password",
-      confirmPassField: "confirmPassword",
     },
-    async (email, password, confirmPassword, done) => {
+    async (email, password, done) => {
       try {
         const user = await UserModel.findOne({ email });
-        if (
-          !user ||
-          user.comparePassword(password) ||
-          user.comparePassword(confirmPassword)
-        ) {
+        if (!user || !(await user.comparePassword(password))) {
           return done(null, false, { message: "Invalid credentials" });
         }
         return done(null, user);

@@ -38,18 +38,18 @@ function generateToken(user) {
   });
 }
 
-module.exports.loginAuth = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await UserModel.findOne({ email });
+// module.exports.loginAuth = async (req, res) => {
+//   const { email, password } = req.body;
+//   const user = await UserModel.findOne({ email });
 
-  if (!user || !(await user.comparePassword(password))) {
-    return res.status(401).json({ error: "Invalid credentials" });
-  }
+//   if (!user || !(await user.comparePassword(password))) {
+//     return res.status(401).json({ error: "Invalid credentials" });
+//   }
 
-  const token = generateToken(user);
-  console.log("token:", token);
-  res.json({ token });
-};
+//   const token = generateToken(user);
+//   console.log("token:", token);
+//   res.json({ token });
+// };
 
 module.exports.signUpAuth = async (req, res) => {
   const { email, password, confirmPassword } = req.body;
