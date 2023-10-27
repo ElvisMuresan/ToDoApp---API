@@ -58,25 +58,25 @@ passport.use(
   )
 );
 
-passport.use(
-  new LocalStrategy(
-    {
-      usernameField: "email",
-      passwordField: "password",
-    },
-    async (email, password, done) => {
-      try {
-        const user = await UserModel.findOne({ email });
-        if (!user || !(await user.comparePassword(password))) {
-          return done(null, false, { message: "Invalid credentials" });
-        }
-        return done(null, user);
-      } catch (error) {
-        return done(error);
-      }
-    }
-  )
-);
+// passport.use(
+//   new LocalStrategy(
+//     {
+//       usernameField: "email",
+//       passwordField: "password",
+//     },
+//     async (email, password, done) => {
+//       try {
+//         const user = await UserModel.findOne({ email });
+//         if (!user || !(await user.comparePassword(password))) {
+//           return done(null, false, { message: "Invalid credentials" });
+//         }
+//         return done(null, user);
+//       } catch (error) {
+//         return done(error);
+//       }
+//     }
+//   )
+// );
 
 passport.serializeUser((user, done) => {
   done(null, user.id);

@@ -51,6 +51,17 @@ function generateToken(user) {
 //   res.json({ token });
 // };
 
+module.exports.loginAuth = async (req, res) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    if (!user) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+  })(req, res, next);
+};
+
 module.exports.signUpAuth = async (req, res) => {
   const { email, password, confirmPassword } = req.body;
   const existingUser = await UserModel.findOne({ email });
